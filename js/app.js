@@ -11,7 +11,6 @@ $('document').ready(function () {
     this.horns = animal.horns;
   }
   Animal.all = [];
-
   const ajaxSettings = {
     method: 'get',
     dataType: 'json',
