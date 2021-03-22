@@ -1,6 +1,6 @@
 # jQuery Selectors and Events
 
-## Configuration
+## Edited
 
 _Your repository must include the following config files:_
 
