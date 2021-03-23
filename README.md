@@ -1,6 +1,8 @@
 ## Feature #1: Display images
 
+
 Estimate of time needed to complete: __half an hour__
+
 
 Start time: __2:30pm__
 
