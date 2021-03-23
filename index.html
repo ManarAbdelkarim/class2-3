@@ -12,6 +12,7 @@
   </head>
   <body>
     <header>
+      <div>
       <h1>The Gallery of Horns</h1>
       <form>
         <input type="radio" id="sortByTitle" name="sort" value="SortByTitle" checked>
@@ -22,19 +23,40 @@
       <select>
         <option value="default">Filter by Keyword</option>
       </select>
+    </div>
+    <div class="buttonsContainer">
+      <button id="page1">page1</button>
+      <button id="page2">page2</button>
+    </div>
+     
     </header>
     <main>
-      <div class="photo-template ">
+      <!-- <div class="pages"> -->
+      
+      <!-- </div> -->
+      <!-- <div class="photo-template ">
         <h2></h2>
         <img src="" alt="">
         <p></p>
       </div>
-      <div class="filteredImages"></div>
+      <div class="filteredImages"></div> -->
+
+      <template class="photo-template" id="template1" type="text/x-tmpl-mustache">
+        <h2>{{title}} # {{horns}}</h2>
+        <img src="{{image_url}}" alt="{{title}}">
+        <p>{{description}}</p>
+      </template>
+      <template class="photo-template" id="template2" type="text/x-tmpl-mustache">
+        <h2>{{title}} # {{horns}}</h2>
+        <img src="{{image_url}}" alt="{{title}}">
+        <p>{{description}}</p>
+      </template>
     </main>
     <footer>
       &copy; 2018 Code Fellows
     </footer>
   </body>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://unpkg.com/mustache@latest"></script>
 <script src="./js/app.js"></script>
 </html>

@@ -1,61 +1,34 @@
 'use strict';
 
-
 $('document').ready(function () {
+  let animalObject;
 
-  function Animal(animal) {
+
+  function Animal (animal) {
     this.image_url = animal.image_url;
     this.title = animal.title;
     this.description = animal.description;
     this.keyword = animal.keyword;
     this.horns = animal.horns;
   }
-  Animal.all = [];
-  const ajaxSettings = {
-    method: 'get',
-    dataType: 'json',
-  };
-  let animalObject;
-  $.ajax('data/page-1.json', ajaxSettings).then((data) => {
-    data.forEach((animal) => {
-      animalObject = new Animal(animal);
-      // animalObject.renderManually();
-      animalObject.cloneRender();
-      Animal.all.push(animalObject);
-      console.log('here it is', animalObject.all);
-    });
 
-    generateDropDown();
-  });
-  // Animal.prototype.renderManually = function () {
-  //   $('main').append(`
-  //     <div class="photo-template">
-  //     <h2>${this.title}</h2>
-  //     <img src="${this.image_url}" alt="${this.title}">
-  //     <p>${this.description}</p>
-  //   </div
-  //   </div>
-  //   `);
-  // };
-
-  Animal.prototype.cloneRender = function () {
-    let clonedDiv = $('.photo-template').clone();
-    clonedDiv.find('h2').text(`${this.title} # ${this.horns}`);
-    clonedDiv.find('img').attr('src', this.image_url , 'alt', this.title);
-    clonedDiv.find('p').text(this.description);
-    // clonedDiv.removeClass('template');
-    clonedDiv.removeClass('photo-template');
-    clonedDiv.addClass(this.keyword);
-    $('main').append(clonedDiv);
+  Animal.prototype.renderWithMustache = function () {
+    let template = $('#template1').html();
+    let html = Mustache.render(template, this);
+    let newAnimalDiv = $('<div></div>');
+    newAnimalDiv.addClass(`${this.keyword} animal`);
+    $(newAnimalDiv).append(html);
+    $('main').append(newAnimalDiv);
   };
 
-
-  const generateDropDown = () => {
-
+  Animal.prototype.generateDropDown = function() {
     let testArray = [];
     let newOption;
+    if ( $('select').children().length === 0 ) {
+      newOption = $('<option/>').attr({ 'value':'default'}).text('Filter by Keyword');
+      $('select').append(newOption) ;
+    }
     Animal.all.forEach(element => {
-
       if (testArray.includes(element.keyword) === false) {
         newOption = $('<option/>').attr({ 'value':`${element.keyword}`}).text(`${element.keyword}`);
         $('select').append(newOption) ;
@@ -65,9 +38,37 @@ $('document').ready(function () {
 
   };
 
+  Animal.all = [];
+  const ajaxSettings = {
+    method: 'get',
+    dataType: 'json',
+  };
+
+
+  function renderAjax(url, isRender) {
+    $.ajax(url, ajaxSettings).then((data) => {
+      data.forEach(animal => {
+        animalObject = new Animal(animal);
+        if (isRender){
+          animalObject.renderWithMustache();
+          Animal.all.push(animalObject);
+        }
+      });
+      if (isRender){
+        // sort the images alphabetically for the first time
+        sortDefault();
+        animalObject.generateDropDown();
+      }
+    });
+  }
+
+  renderAjax('data/page-1.json', true);
+  renderAjax('data/page-2.json', false);
+
+
+  // filtering by keywords
   $('select').change(function () {
     if ($(this).val() === 'default') {
-      // $('.filteredImages').empty();
 
       Animal.all.forEach(obj =>{
         $(`.${obj.keyword}`).removeClass('template');
@@ -75,25 +76,11 @@ $('document').ready(function () {
     }
 
 
-
-
-    // $('.photo-template').show();
-
     else{
-      // $('.filteredImages').empty();
-      // $('.photo-template').hide();
 
       Animal.all.forEach(obj =>{
         $(`.${obj.keyword}`).addClass('template');
         if (obj.keyword === $(this).val()) {
-        //   $('.filteredImages').append(`
-        //   <div class="photo-filtered">
-        //   <h2>${obj.title}</h2>
-        //   <img src="${obj.image_url}" alt="${obj.title}">
-        //   <p>${obj.description}</p>
-        // </div
-        // </div>
-        // `);
           $(`.${obj.keyword}`).removeClass('template');
         }
       });
@@ -101,6 +88,92 @@ $('document').ready(function () {
 
   });
 
+  $('button').click(function () {
+    $('select option').remove();
+    $('.animal').remove();
+    Animal.all =[];
+    if (this.id === 'page2') {
+      renderAjax('data/page-1.json', false);
+      renderAjax('data/page-2.json', true);
+
+    }
+
+
+    else{
+      renderAjax('data/page-2.json', false);
+      renderAjax('data/page-1.json', true);
+
+    }
+
+  });
+
+
+
+
+
+  let radios = $('input:radio[name=sort]');
+  for(let radio in radios) {
+
+    if (radio === '0' || radio === '1' ) {
+      console.log( radios[radio]);
+      radios[radio].onclick = function() {
+        // alert(this.value);
+        if (this.value === 'SortByTitle') {
+
+          Animal.all.sort(compareTitle);
+          // console.log('here is the sorted array' , Animal.all);
+          renderSortedArray();
+          return;
+        }
+
+        else{
+          Animal.all.sort(compareHorns);
+          // console.log('here is the sorted array' , Animal.all);
+          renderSortedArray();
+          return;
+        }
+      };
+
+
+    }
+    else{
+      break;
+    }
+
+  }
+  function renderSortedArray (){
+    $('.animal').remove();
+    Animal.all.forEach(animal => {
+      animal.renderWithMustache();
+    });
+  }
+  function compareHorns (a, b){
+
+    if ( a.horns < b.horns ){
+      return -1;
+    }
+    if ( a.horns> b.horns ){
+      return 1;
+    }
+    return 0;
+  }
+
+
+
+  function compareTitle( a, b ) {
+    if ( a.title < b.title ){
+      return -1;
+    }
+    if ( a.title> b.title ){
+      return 1;
+    }
+    return 0;
+  }
+
+  const sortDefault = () => {
+    Animal.all.sort(compareTitle);
+    renderSortedArray();
+  };
 
 });
 

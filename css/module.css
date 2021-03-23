@@ -3,8 +3,8 @@ img{
     height: 300px;
 }
 
-main div{
-display: inline;
+main div {
+/* display: inline; */
 width: fit-content;
 float: left;
 overflow: hidden;
@@ -13,6 +13,9 @@ margin: 5px 4%;
 
 }
 
+main{
+    overflow: hidden;
+}
 select{
     font-size:medium;
     margin-left: 15%;
@@ -26,4 +29,27 @@ display: none;
 
 .photo-template{
     display: none;
+    clear: both;
+}
+
+main{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap ;
+}
+
+
+.buttonsContainer{
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+    justify-content:space-between;
+}
+
+#page2{
+    align-self: flex-end;
+}
+
+button{
+    align-content: space-between;
 }
