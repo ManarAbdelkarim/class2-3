@@ -165,7 +165,6 @@ $('document').ready(function () {
     let title_b;
     if (isLetter(a.title) === false) {
       title_a = a.title;
-      debugger;
       while (isLetter(title_a) === false) {
         title_a = a.title.substring(1);
       }
@@ -200,7 +199,6 @@ $('document').ready(function () {
 
 
   function isLetter(str) {
-    debugger;
     if (str[0].match(/[a-z]/i)) {
       return true;
     }
