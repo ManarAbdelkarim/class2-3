@@ -161,10 +161,33 @@ $('document').ready(function () {
 
 
   function compareTitle( a, b ) {
-    if ( a.title < b.title ){
+    let title_a ;
+    let title_b;
+    if (isLetter(a.title) === false) {
+      title_a = a.title;
+      debugger;
+      while (isLetter(title_a) === false) {
+        title_a = a.title.substring(1);
+      }
+    }
+    else{
+      title_a = a.title;
+    }
+
+    if (isLetter(b.title) === false) {
+      title_b = b.title;
+      while (isLetter(title_b) === false) {
+        title_b = b.title.substring(1);
+      }
+    }
+    else{
+      title_b = b.title;
+    }
+
+    if (title_a.toLowerCase() < title_b.toLowerCase() ){
       return -1;
     }
-    if ( a.title> b.title ){
+    if (title_a.toLowerCase() > title_b.toLowerCase() ){
       return 1;
     }
     return 0;
@@ -175,6 +198,21 @@ $('document').ready(function () {
     renderSortedArray();
   };
 
+
+  function isLetter(str) {
+    debugger;
+    if (str[0].match(/[a-z]/i)) {
+      return true;
+    }
+    else{
+      return false;
+    }
+
+  }
+
+
 });
+
+
 
 
