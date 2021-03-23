@@ -13,7 +13,7 @@ $('document').ready(function () {
   }
 
   Animal.prototype.renderWithMustache = function () {
-    let template = $('#template1').html();
+    let template = $('#template').html();
     let html = Mustache.render(template, this);
     let newAnimalDiv = $('<div></div>');
     newAnimalDiv.addClass(`${this.keyword} animal`);
