@@ -3,7 +3,7 @@ img{
     height: 300px;
 }
 
-.photo-template ,.photo-filtered{
+main div{
 display: inline;
 width: fit-content;
 float: left;
@@ -16,4 +16,14 @@ margin: 5px 4%;
 select{
     font-size:medium;
     margin-left: 15%;
+    margin-top: 3%;
+}
+
+
+.template{
+display: none;
+}
+
+.photo-template{
+    display: none;
 }
