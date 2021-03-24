@@ -117,18 +117,15 @@ $('document').ready(function () {
     if (radio === '0' || radio === '1' ) {
       console.log( radios[radio]);
       radios[radio].onclick = function() {
-        // alert(this.value);
         if (this.value === 'SortByTitle') {
 
           Animal.all.sort(compareTitle);
-          // console.log('here is the sorted array' , Animal.all);
           renderSortedArray();
           return;
         }
 
         else{
           Animal.all.sort(compareHorns);
-          // console.log('here is the sorted array' , Animal.all);
           renderSortedArray();
           return;
         }
@@ -161,27 +158,9 @@ $('document').ready(function () {
 
 
   function compareTitle( a, b ) {
-    let title_a ;
-    let title_b;
-    if (isLetter(a.title) === false) {
-      title_a = a.title;
-      while (isLetter(title_a) === false) {
-        title_a = a.title.substring(1);
-      }
-    }
-    else{
-      title_a = a.title;
-    }
 
-    if (isLetter(b.title) === false) {
-      title_b = b.title;
-      while (isLetter(title_b) === false) {
-        title_b = b.title.substring(1);
-      }
-    }
-    else{
-      title_b = b.title;
-    }
+    let title_a = a.title.replace(/[^a-z]/gi, '');
+    let title_b = b.title.replace(/[^a-z]/gi, '');
 
     if (title_a.toLowerCase() < title_b.toLowerCase() ){
       return -1;
@@ -196,17 +175,6 @@ $('document').ready(function () {
     Animal.all.sort(compareTitle);
     renderSortedArray();
   };
-
-
-  function isLetter(str) {
-    if (str[0].match(/[a-z]/i)) {
-      return true;
-    }
-    else{
-      return false;
-    }
-
-  }
 
 
 });
