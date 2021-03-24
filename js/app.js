@@ -56,6 +56,7 @@ $('document').ready(function () {
       });
       if (isRender){
         // sort the images alphabetically for the first time
+        $('#sortByTitle').prop('checked',true);
         sortDefault();
         animalObject.generateDropDown();
       }
